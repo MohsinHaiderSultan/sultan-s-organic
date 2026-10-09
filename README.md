@@ -12,13 +12,23 @@ small Pakistani food businesses: customers browse the catalog, build a cart, and
 
 | File          | Purpose                                                        |
 |---------------|----------------------------------------------------------------|
-| `index.html`  | Page structure: nav, hero, trust strip, shop, why-us, shilajit guide, footer, cart drawer |
+| `index.html`  | Page structure: announcement bar, nav, hero, trust strip, shop, why-us, shilajit guide, FAQ, contact strip, footer, cart drawer, sticky mobile bar, back-to-top |
 | `styles.css`  | Warm premium theme (ivory / forest green / gold), mobile-first responsive |
 | `products.js` | **CONFIG + product catalog** — the file you will edit most      |
-| `script.js`   | Catalog rendering, filters, pack-size pricing, cart drawer, WhatsApp checkout |
+| `script.js`   | Catalog rendering, filters, pack-size pricing, cart drawer, WhatsApp checkout, FAQ accordion, scroll effects |
 | `README.md`   | This file                                                      |
 
 No external images are used anywhere — all visuals are inline SVG / CSS.
+
+## Premium overhaul (Oct 2026)
+
+The site received a full premium polish pass: announcement bar with rotating
+messages, oversized display hero with layered animated mountain scene, gold
+gradient buttons, film-grain texture, custom scrollbar/selection, quick-add on
+product cards, cart badge pop animation, scroll-reveal stagger, FAQ accordion,
+WhatsApp contact strip, multi-column footer, back-to-top button, sticky mobile
+order bar, and active nav-link highlighting. All functionality (catalog,
+filters, cart, WhatsApp checkout) is unchanged.
 
 ## Before showing this to customers — 2 TODOs
 
