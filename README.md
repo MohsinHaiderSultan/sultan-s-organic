@@ -8,12 +8,23 @@ small Pakistani food businesses: customers browse the catalog, build a cart, and
 **check out over WhatsApp** (the cart composes an order message and opens a
 `wa.me` link). Payment is **Cash on Delivery**.
 
+## Design (Oct 2026 retheme)
+
+Warm-light **premium-rustic editorial** theme, food-magazine style: warm cream
+page (`#f5f0e6`), ivory paper cards (`#fffaf0`), deep pine band (`#153f2c`),
+gold accents (`#c38a35`), burnt-apricot eyebrow labels (`#d46f37`).
+Headings in **Libre Caslon Display**, UI/body in **DM Sans**.
+Layout rhythm: slim topbar → full-width hero panel with asymmetric
+`4px 4px 34px 4px` radius → story intro → full-bleed pine collection band
+(shop) → origin strip → numbered principles → shilajit guide → FAQ → minimal
+footer. All artwork is CSS/SVG gradients — zero image files.
+
 ## Files
 
 | File          | Purpose                                                        |
 |---------------|----------------------------------------------------------------|
-| `index.html`  | Page structure: announcement bar, nav, hero, trust strip, shop, why-us, shilajit guide, FAQ, contact strip, footer, cart drawer, sticky mobile bar, back-to-top |
-| `styles.css`  | Warm premium theme (ivory / forest green / gold), mobile-first responsive |
+| `index.html`  | Page structure: topbar, hero, story intro, collection band (shop), origin strip, principles, shilajit guide, FAQ, contact line, footer, cart drawer, sticky mobile bar, back-to-top |
+| `styles.css`  | Warm-rustic editorial theme (cream / pine / gold), mobile-first responsive |
 | `products.js` | **CONFIG + product catalog** — the file you will edit most      |
 | `script.js`   | Catalog rendering, filters, pack-size pricing, cart drawer, WhatsApp checkout, FAQ accordion, scroll effects |
 | `README.md`   | This file                                                      |
