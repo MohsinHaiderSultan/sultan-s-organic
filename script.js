@@ -67,18 +67,20 @@ function renderProducts() {
       const pack = p.packs[pi];
       const motifSvg = (ICONS[p.motif] || ICONS.almond).replace("<svg ", '<svg class="motif" ');
       return `
-      <article class="card" data-id="${esc(p.id)}" style="animation-delay:${Math.min(i * 70, 420)}ms">
+      <article class="card art-${esc(p.motif)}" data-id="${esc(p.id)}" style="animation-delay:${Math.min(i * 70, 420)}ms">
         <div class="card-visual">
           ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ""}
-          <span class="ring" aria-hidden="true"></span>
           ${motifSvg}
+          <div class="card-info">
+            <h3>${esc(p.name)}</h3>
+            <p class="card-sub">${esc(p.sub)}</p>
+            <span class="price" data-price>${money(pack.price)}</span>
+          </div>
           <button class="quick-add" data-add aria-label="Quick add ${esc(p.name)} to cart">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h15l-1.2 12.2a1.5 1.5 0 0 1-1.5 1.3H5.7a1.5 1.5 0 0 1-1.5-1.3L3 8"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M12 12v4M10 14h4"/></svg>
           </button>
         </div>
-        <div class="card-body">
-          <h3>${esc(p.name)}</h3>
-          <p class="card-sub">${esc(p.sub)}</p>
+        <div class="card-control">
           <p class="card-desc">${esc(p.description)}</p>
           <div class="pack-row" role="group" aria-label="Pack size for ${esc(p.name)}">
             ${p.packs
@@ -88,10 +90,7 @@ function renderProducts() {
               )
               .join("")}
           </div>
-          <div class="card-foot">
-            <span class="price" data-price>${money(pack.price)}</span>
-            <button class="btn btn-gold btn-sm" data-add>Add to Cart</button>
-          </div>
+          <button class="btn btn-gold btn-block" data-add>Add to Cart</button>
         </div>
       </article>`;
     })
