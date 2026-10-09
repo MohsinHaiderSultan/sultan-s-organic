@@ -51,7 +51,7 @@
     return (
       '<article class="product-card reveal" data-id="' + p.id + '">' +
         '<div class="product-media">' + ribbon +
-          '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy" />' +
+          (p.imgClass ? '<div class="p-photo ' + p.imgClass + '" role="img" aria-label="' + p.name + '"></div>' : '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy" />') +
         "</div>" +
         '<div class="product-body">' +
           "<h3>" + p.name + "</h3>" +
@@ -136,7 +136,7 @@
     var found = cart.find(function (it) { return it.key === key; });
     if (found) { found.qty += 1; }
     else {
-      cart.push({ key: key, id: p.id, name: p.name, pack: pack.label, price: pack.price, img: p.img, qty: 1 });
+      cart.push({ key: key, id: p.id, name: p.name, pack: pack.label, price: pack.price, img: p.img || null, imgClass: p.imgClass || null, qty: 1 });
     }
     saveCart();
     renderCart();
@@ -166,7 +166,7 @@
     box.innerHTML = cart.map(function (it) {
       return (
         '<div class="cart-item" data-key="' + it.key + '">' +
-          '<img src="' + it.img + '" alt="" />' +
+          (it.imgClass ? '<div class="cart-photo ' + it.imgClass + '" aria-hidden="true"></div>' : '<img src="' + it.img + '" alt="" />') +
           '<div class="cart-item-info"><h4>' + it.name + '</h4>' +
             '<span class="pack-label">' + it.pack + "</span>" +
             '<div class="qty-row">' +
