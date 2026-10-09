@@ -62,15 +62,19 @@ function renderProducts() {
   const list = PRODUCTS.filter((p) => activeFilter === "all" || p.category === activeFilter);
 
   grid.innerHTML = list
-    .map((p) => {
+    .map((p, i) => {
       const pi = packIndex(p.id);
       const pack = p.packs[pi];
+      const motifSvg = (ICONS[p.motif] || ICONS.almond).replace("<svg ", '<svg class="motif" ');
       return `
-      <article class="card" data-id="${esc(p.id)}">
+      <article class="card" data-id="${esc(p.id)}" style="animation-delay:${Math.min(i * 70, 420)}ms">
         <div class="card-visual">
           ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ""}
           <span class="ring" aria-hidden="true"></span>
-          ${ICONS[p.motif] || ICONS.almond}
+          ${motifSvg}
+          <button class="quick-add" data-add aria-label="Quick add ${esc(p.name)} to cart">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h15l-1.2 12.2a1.5 1.5 0 0 1-1.5 1.3H5.7a1.5 1.5 0 0 1-1.5-1.3L3 8"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M12 12v4M10 14h4"/></svg>
+          </button>
         </div>
         <div class="card-body">
           <h3>${esc(p.name)}</h3>
@@ -151,6 +155,10 @@ function addToCart(id) {
   else cart[key] = { id, pack: pack.label, qty: 1 };
   saveCart();
   renderCart();
+  const badge = $("#cartCount");
+  badge.classList.remove("pop");
+  void badge.offsetWidth;
+  badge.classList.add("pop");
   toast(`${product.name} (${pack.label}) added to cart`);
 }
 
@@ -311,6 +319,103 @@ const revealObs = new IntersectionObserver(
   { threshold: 0.12 }
 );
 document.querySelectorAll(".reveal").forEach((el) => revealObs.observe(el));
+
+/* ---------- Announcement rotator ---------- */
+(function () {
+  const el = $("#announceMsg");
+  if (!el) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const texts = [
+    "Cash on Delivery — Nationwide across Pakistan",
+    "Packed fresh in Gilgit-Baltistan",
+    "Lab-tested pure shilajit",
+  ];
+  let ai = 0;
+  setInterval(() => {
+    el.classList.add("fade");
+    setTimeout(() => {
+      ai = (ai + 1) % texts.length;
+      el.textContent = texts[ai];
+      el.classList.remove("fade");
+    }, 360);
+  }, 4200);
+})();
+
+/* ---------- Nav scroll state + back to top ---------- */
+const backTop = $("#backToTop");
+window.addEventListener(
+  "scroll",
+  () => {
+    document.querySelector(".nav").classList.toggle("scrolled", window.scrollY > 8);
+    backTop.classList.toggle("show", window.scrollY > 700);
+  },
+  { passive: true }
+);
+backTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+/* ---------- Active nav link highlighting ---------- */
+(function () {
+  const links = Array.from(document.querySelectorAll(".nav-links a"));
+  const targets = ["hero", "shop", "why", "shilajit-guide", "faq", "contact"]
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+  if (!targets.length) return;
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        const want = "#" + (en.target.id === "hero" ? "top" : en.target.id);
+        links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === want));
+      });
+    },
+    { rootMargin: "-38% 0px -55% 0px" }
+  );
+  targets.forEach((t) => spy.observe(t));
+})();
+
+/* ---------- Sticky mobile order bar ---------- */
+(function () {
+  const bar = $("#stickyBar");
+  const hero = $("#hero");
+  if (!bar || !hero || !("IntersectionObserver" in window)) return;
+  new IntersectionObserver(
+    ([en]) => {
+      bar.classList.toggle("show", !en.isIntersecting && en.boundingClientRect.top < 0);
+    },
+    { threshold: 0 }
+  ).observe(hero);
+})();
+
+/* ---------- FAQ accordion ---------- */
+document.querySelectorAll(".faq-item").forEach((item) => {
+  const btn = item.querySelector(".faq-q");
+  btn.addEventListener("click", () => {
+    const wasOpen = item.classList.contains("open");
+    document.querySelectorAll(".faq-item.open").forEach((o) => {
+      o.classList.remove("open");
+      o.querySelector(".faq-q").setAttribute("aria-expanded", "false");
+    });
+    if (!wasOpen) {
+      item.classList.add("open");
+      btn.setAttribute("aria-expanded", "true");
+    }
+  });
+});
+
+/* ---------- Footer category shortcuts (jump to shop + apply filter) ---------- */
+document.querySelectorAll("[data-cat]").forEach((a) => {
+  a.addEventListener("click", () => {
+    const pill = document.querySelector(`.pill[data-filter="${a.dataset.cat}"]`);
+    if (pill) pill.click();
+  });
+});
+
+/* ---------- Staggered scroll reveals ---------- */
+document.querySelectorAll("[data-stagger]").forEach((group) => {
+  group.querySelectorAll(".reveal").forEach((el, i) => {
+    el.style.transitionDelay = Math.min(i * 90, 540) + "ms";
+  });
+});
 
 /* ---------- Init ---------- */
 $("#year").textContent = new Date().getFullYear();
